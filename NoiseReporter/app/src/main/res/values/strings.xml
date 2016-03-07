@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NoiseReporter</string>
+    <string name="title_activity_noise_map">Map</string>
+</resources>
