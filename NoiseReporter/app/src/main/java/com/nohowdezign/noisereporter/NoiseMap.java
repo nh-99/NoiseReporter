@@ -39,7 +39,7 @@ public class NoiseMap extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void run() {
                 System.out.println(soundMeter.getDb());
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, 1000);
             }
         });
     }
