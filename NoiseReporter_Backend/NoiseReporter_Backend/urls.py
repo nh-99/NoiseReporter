@@ -1,4 +1,4 @@
-"""NoiseReporter_Backend URL Configuration
+"""writ URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.8/topics/http/urls/
@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from main.views import *
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', view=BaseTemplateView.as_view(), name="base-template"),
+    url(r'', include('social_auth.urls')),
 ]

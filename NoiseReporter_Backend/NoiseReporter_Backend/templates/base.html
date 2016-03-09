@@ -1,0 +1,85 @@
+{% load staticfiles %}
+<html>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}WRIT{% endblock %}</title>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a>WRIT</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            {% block navbar %}
+                <ul class="nav navbar-nav">
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle btn-default" id ="tac_defcon_btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                TAC DEFCONS
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="tac_defcon_btn">
+                                {% block tacdefcons %}
+                                    <li class="alert alert-success">TAC A: DEFCON 5</li>
+                                    <li class="alert alert-info">TAC B: DEFCON 4</li>
+                                    <li class="alert alert-warning">TAC C: DEFCON 3</li>
+                                    <li class="alert alert-danger">TAC D: DEFCON 2</li>
+                                    <li class="alert alert-danger">TAC E: DEFCON 1</li>
+                                {% endblock %}
+                            </ul>
+                        </div>
+                    </li>
+                {% block navlinks %}
+                    <li><a>Link 1</a></li>
+                    <li><a>Link 2</a></li>
+                {% endblock %}
+            {% endblock %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% block agentinfo %}
+                    <li><a>Register</a></li>
+                    <li>{% if request.user.is_authenticated %}<a>{{ request.user.username }}</a>{% else %}<a href="/login/google-oauth2">Login</a>{% endif %}</li></li>
+                {% endblock %}
+            </ul>
+        </div>
+    </div>
+    <div class="container" id="body">
+        {% block body %}
+            <div class="jumbotron">
+                {% block jumbotron %}
+                    <h1>
+                        This is WRIT JUMBOTRON!!!
+                    </h1>
+                    <p>you wanted a "header" right?</p>
+                {% endblock %}
+            </div>
+            <div class="row">
+                {% block content %}
+                    <div class="col-md-6">
+                        <h2>This is some c0nt3ntz</h2>
+                        <p>stuff stuff stuff</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>This is some MOAR c0nt3ntz!</h2>
+                        <p>stuff stuff moar stuff</p>
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
