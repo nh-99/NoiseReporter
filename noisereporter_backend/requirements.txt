@@ -1,4 +1,2 @@
 django
 mysqlclient
-django-social-auth3
-simplejson
