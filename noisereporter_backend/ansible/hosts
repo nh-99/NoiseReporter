@@ -1,0 +1,9 @@
+[webservers]
+thefortress.xyz:2244
+
+[dbservers]
+
+[haproxies]
+
+[email]
+hikeit.me

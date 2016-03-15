@@ -1,0 +1,3 @@
+---
+  - name: Copy django upstart template
+    template: src=upstart.conf.j2 dest="/etc/init/{{ deployment_name }}_{{ mode }}.conf"

@@ -1,0 +1,14 @@
+source /home/{{ deployment_name }}/{{mode}}/env/bin/activate
+
+export PYTHON_PATH="/home/{{deployment_name}}/{{mode}}/env/"
+export DJANGO_SETTINGS_MODULE="{{deployment_name}}.settings.{{ mode }}"
+export DJANGO_SECRET_KEY="{{secret_key}}"
+export DJANGO_CONFIGURATION="{{mode}}"
+
+export HIKEIT_DB_USER="{{ db_user }}"
+export HIKEIT_DB_PASSWORD="{{ db_password }}"
+export HIKEIT_HOSTNAME="{{ hikeit_hostname }}"
+export HIKEIT_EMAIL_USER="{{ email_user }}"
+export HIKEIT_EMAIL_PASS="{{ email_password }}"
+export HIKEIT_SECRET_KEY="{{ secret_key }}"
+export HIKEIT_MEDIA_ROOT="/home/{{deployment_name}}/{{mode}}/media"

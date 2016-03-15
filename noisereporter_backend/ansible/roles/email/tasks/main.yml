@@ -1,0 +1,25 @@
+---
+  - name: Install postfix and dovecot
+    apt: pkg={{item}} state=installed update-cache=yes
+    with_items:
+    - dovecot-core
+    - dovecot-imapd
+    - postfix
+
+  - name: Copy postfix filea
+    copy: src=postfix/ dest=/etc/postfix
+
+  - name: Copy dovecot files
+    copy: src=dovecot/ dest=/etc/dovecot
+
+  - name: Copy ssl cert
+    copy: src=mailcert.pem dest=/etc/ssl/certs
+
+  - name: Copy ssl key
+    copy: src=mail.key dest=/etc/ssl/private
+
+  - name: Restart postfix
+    service: name=postfix state=restarted
+
+  - name: Restart dovecot
+    service: name=dovecot state=restarted

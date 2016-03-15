@@ -1,0 +1,8 @@
+---
+- hosts: webservers
+  roles:
+    - role: common
+    - role: mysql
+    - role: nginx
+    - role: upstart
+    - role: django
