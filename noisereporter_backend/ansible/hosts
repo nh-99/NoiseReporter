@@ -1,5 +1,5 @@
 [webservers]
-thefortress.xyz:2244
+192.168.2.116:2244
 
 [dbservers]
 
