@@ -41,17 +41,6 @@
       - deploy
       - reqs
 
-  - name: Sync Django database.
-    django_manage: command=syncdb app_path=/home/{{deployment_name}}/{{mode}}/noisereporter_backend/ settings={{deployment_name}}.settings.{{ mode }} virtualenv=/home/{{deployment_name}}/{{ mode }}/env/
-    become_user: "{{deployment_name}}"
-    environment: 
-        NOISEREPORT_DB_USER: "{{db_user}}"
-        NOISEREPORT_DB_PASSWORD: "{{db_password}}"
-    when: mode != 'local'
-    tags:
-      - deploy
-      - syncdb
-
   - name: Migrate Django database.
     django_manage: command=migrate app_path=/home/{{ deployment_name }}/{{mode}}/noisereporter_backend/ settings={{ deployment_name }}.settings.{{mode}} virtualenv=/home/{{deployment_name}}/{{ mode }}/env/
     become_user: "{{deployment_name}}"
