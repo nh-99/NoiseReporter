@@ -52,16 +52,6 @@
       - deploy
       - migrate
 
-  - name: Generate Django media.
-    django_manage: command=collectstatic app_path=/home/{{ deployment_name }}/{{mode}}/noisereporter_backend/ settings={{ deployment_name}}.settings.{{mode}} virtualenv=/home/{{deployment_name}}/{{mode}}/noisereporter_backend/env/
-    become_user: "{{deployment_name}}"
-    environment: 
-        NOISEREPORT_DB_USER: "{{db_user}}"
-        NOISEREPORT_DB_PASSWORD: "{{db_password}}"
-    tags:
-      - deploy
-      - collectstatic
-
   - name: Start the service
     service: name={{deployment_name}}_{{mode}} state=restarted
     tags:
