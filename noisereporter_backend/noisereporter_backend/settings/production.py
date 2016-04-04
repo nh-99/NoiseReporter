@@ -6,7 +6,7 @@ from noisereporter_backend.settings import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'writ',
+        'NAME': 'noisereport',
         'USER': os.environ.get("NOISEREPORT_DB_USER", ''),
         'PASSWORD': os.environ.get("NOISEREPORT_DB_PASSWORD", ''),
     }
