@@ -1,47 +1,50 @@
 package com.nohowdezign.noisereporter;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.loopj.android.http.AsyncHttpClient;
 import com.nohowdezign.noisereporter.audio.SoundMeter;
 import com.nohowdezign.noisereporter.network.SendData;
 
 import org.json.JSONException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class NoiseMap extends FragmentActivity implements OnMapReadyCallback {
+public class NoiseMap extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private SoundMeter soundMeter;
     private List<Double> decibelMeasures = new ArrayList<Double>();
     private List<Double> averageDecibelMeasures = new ArrayList<Double>();
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
+    private String mActivityTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +56,43 @@ public class NoiseMap extends FragmentActivity implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.show();
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast toast = Toast.makeText(getApplicationContext(), "i click on FAB", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        addDrawerItems();
+        setupDrawer();
 
         soundMeter = new SoundMeter();
         soundMeter.start();
         storeDecibels();
         calculateAverages();
         sendData();
+    }
+
+    private void setupDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mActivityTitle = getTitle().toString();
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close) {
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Noise Reporter");
+            }
+
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle("Noise Reporter");
+            }
+        };
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private void addDrawerItems() {
+        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
     }
 
     /**
@@ -81,6 +106,29 @@ public class NoiseMap extends FragmentActivity implements OnMapReadyCallback {
         mMap.addMarker(new MarkerOptions().position(belfast).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(belfast));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void storeDecibels() {
@@ -125,9 +173,15 @@ public class NoiseMap extends FragmentActivity implements OnMapReadyCallback {
                 SendData dataSender = new SendData();
                 LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
                 try {
+                    double latitude = 0;
+                    double longitude = 0;
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    double longitude = location.getLongitude();
-                    double latitude = location.getLatitude();
+                    try {
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
+                    } catch(NullPointerException e) {
+                        e.printStackTrace();
+                    }
                     if(averageDecibelMeasures.size() > 0) {
                         for (Double decibel : averageDecibelMeasures) {
                             try {
