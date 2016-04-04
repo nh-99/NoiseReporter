@@ -19,7 +19,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class SendData {
     //private String url = "http://thefortress.xyz:7070/";
-    private String url = "http://noisereporter:7070/";
+    private String url = "http://thefortress.xyz:7070/";
 
     public void send(Context context, double lat, double lon, double decibelLevel) throws JSONException {
         AsyncHttpClient client = new AsyncHttpClient();

@@ -1,3 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/fab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:clickable="true"
+    android:src="@mipmap/ic_launcher"
+    app:layout_anchor="@id/map"
+    app:layout_anchorGravity="bottom|right|end"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />
+
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,3 +22,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nohowdezign.noisereporter.NoiseMap" />
+
+</LinearLayout>
