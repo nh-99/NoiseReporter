@@ -11,3 +11,5 @@ DATABASES = {
         'PASSWORD': os.environ.get("NOISEREPORT_DB_PASSWORD", ''),
     }
 }
+
+STATIC_ROOT = "/home/noisereporter_backend/production/noisereporter_backend/static"

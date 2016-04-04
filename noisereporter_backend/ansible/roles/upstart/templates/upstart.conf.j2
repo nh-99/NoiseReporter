@@ -3,7 +3,7 @@ start on runlevel [2345]
 stop on runlevel [06]
 respawn
 respawn limit 10 5
-chdir /home/{{deployment_name}}/{{mode}}
+chdir /home/{{deployment_name}}/{{mode}}/noisereporter_backend
 env PYTHON_PATH="/home/{{deployment_name}}/{{mode}}/noisereport_backend/env/"
 env DJANGO_SETTINGS_MODULE="{{deployment_name}}.settings.{{ mode }}"
 env DJANGO_SECRET_KEY="{{secret_key}}"
