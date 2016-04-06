@@ -5,6 +5,8 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 
 import com.nohowdezign.noisereporter.activities.NoiseMap;
 import com.nohowdezign.noisereporter.audio.SoundMeter;
@@ -25,12 +27,15 @@ public class ReportGenerator {
         this.noiseMap = map;
     }
 
-    public void generateReport() {
+    public void init() {
         soundMeter = new SoundMeter();
         soundMeter.start();
+    }
+
+    public void generateReport(View view) {
         storeDecibels();
         calculateAverages();
-        sendData();
+        sendData(view);
     }
 
     private void storeDecibels() {
@@ -65,10 +70,12 @@ public class ReportGenerator {
         });
     }
 
-    private void sendData() {
+    private void sendData(final View view) {
         // Thread to send the data to the server
         final Handler dataHandler = new Handler();
         dataHandler.post(new Runnable() {
+            boolean firstRun = true;
+
             @Override
             public void run() {
                 System.out.println("Sending shit");
@@ -83,7 +90,16 @@ public class ReportGenerator {
                     }
                     averageDecibelMeasures.clear(); // Clear up averages so we don't have duplicate data entries
                 }
-                dataHandler.postDelayed(this, 60000);
+                // Check to stop
+                if(!firstRun) {
+                    Snackbar snackbar = Snackbar
+                            .make(view, "Report submitted successfully.", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    dataHandler.removeCallbacks(this);
+                } else {
+                    firstRun = false;
+                    dataHandler.postDelayed(this, 60000);
+                }
             }
         });
     }

@@ -20,20 +20,17 @@ public class CreateReport extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        final ReportGenerator reportGenerator = new ReportGenerator(this);
+        reportGenerator.init();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                reportGenerator.generateReport(view);
             }
         });
-
-        final ReportGenerator reportGenerator = new ReportGenerator(this);
-        reportGenerator.generateReport();
 
         final Handler decibelHandler = new Handler();
         decibelHandler.post(new Runnable() {
