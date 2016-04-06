@@ -31,7 +31,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".NoiseMap"
+            android:name=".activities.NoiseMap"
             android:label="@string/title_activity_noise_map">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateReport"
+            android:name=".activities.CreateReport"
             android:label="@string/title_activity_create_report"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

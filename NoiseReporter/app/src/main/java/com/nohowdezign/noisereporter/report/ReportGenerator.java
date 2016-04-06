@@ -1,11 +1,12 @@
 package com.nohowdezign.noisereporter.report;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
 
-import com.nohowdezign.noisereporter.NoiseMap;
+import com.nohowdezign.noisereporter.activities.NoiseMap;
 import com.nohowdezign.noisereporter.audio.SoundMeter;
 import com.nohowdezign.noisereporter.network.SendData;
 
@@ -18,9 +19,9 @@ public class ReportGenerator {
     private SoundMeter soundMeter;
     private List<Double> decibelMeasures = new ArrayList<Double>();
     private List<Double> averageDecibelMeasures = new ArrayList<Double>();
-    private NoiseMap noiseMap;
+    private Activity noiseMap;
 
-    public ReportGenerator(NoiseMap map) {
+    public ReportGenerator(Activity map) {
         this.noiseMap = map;
     }
 
@@ -97,4 +98,7 @@ public class ReportGenerator {
         }
     }
 
+    public double getDecibels() {
+        return soundMeter.getDb();
+    }
 }
