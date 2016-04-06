@@ -3,4 +3,5 @@
     <string name="title_activity_noise_map">Map</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_create_report">Create Report</string>
 </resources>
