@@ -29,7 +29,9 @@ public class ReportGenerator {
 
     public void init() {
         soundMeter = new SoundMeter();
-        soundMeter.start();
+        if(!soundMeter.isRunning()) {
+            soundMeter.start();
+        }
     }
 
     public void generateReport(View view) {
@@ -95,8 +97,11 @@ public class ReportGenerator {
                     Snackbar snackbar = Snackbar
                             .make(view, "Report submitted successfully.", Snackbar.LENGTH_LONG);
                     snackbar.show();
+                    soundMeter.stop();
                     dataHandler.removeCallbacks(this);
                 } else {
+                    Snackbar snackbar = Snackbar
+                            .make(view, "Running (this will take a minute)...", Snackbar.LENGTH_LONG);
                     firstRun = false;
                     dataHandler.postDelayed(this, 60000);
                 }
@@ -116,5 +121,9 @@ public class ReportGenerator {
 
     public double getDecibels() {
         return soundMeter.getDb();
+    }
+
+    public SoundMeter getSoundMeter() {
+        return this.soundMeter;
     }
 }

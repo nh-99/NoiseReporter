@@ -17,17 +17,17 @@ import com.nohowdezign.noisereporter.network.SendData;
 import com.nohowdezign.noisereporter.report.ReportGenerator;
 
 public class CreateReport extends AppCompatActivity {
+    private SoundMeter soundMeter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final ReportGenerator reportGenerator = new ReportGenerator(this);
         reportGenerator.init();
+        soundMeter = reportGenerator.getSoundMeter();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +56,12 @@ public class CreateReport extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        soundMeter.stop();
     }
 
 }

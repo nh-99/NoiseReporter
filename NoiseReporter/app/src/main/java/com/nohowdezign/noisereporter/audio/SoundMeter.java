@@ -13,6 +13,7 @@ public class SoundMeter {
 
     private MediaRecorder mRecorder = null;
     private double mEMA = 0.0;
+    private boolean isRunning = false;
 
     public void start() {
         if (mRecorder == null) {
@@ -29,6 +30,7 @@ public class SoundMeter {
             mRecorder.start();
             mEMA = 0.0;
         }
+        isRunning = true;
     }
 
     public void stop() {
@@ -55,5 +57,9 @@ public class SoundMeter {
         double amp = getAmplitude();
         mEMA = EMA_FILTER * amp + (1.0 - EMA_FILTER) * mEMA;
         return mEMA;
+    }
+
+    public boolean isRunning() {
+        return this.isRunning;
     }
 }
