@@ -42,6 +42,11 @@
         <activity
             android:name=".activities.CreateReport"
             android:label="@string/title_activity_create_report"
+            android:parentActivityName=".activities.NoiseMap" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.NoiseMap" />
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
