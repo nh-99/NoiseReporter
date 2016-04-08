@@ -4,8 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,10 +25,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nohowdezign.noisereporter.R;
+import com.nohowdezign.noisereporter.fragments.Heatmap;
+import com.nohowdezign.noisereporter.fragments.ReportNoise;
 
-public class NoiseMap extends AppCompatActivity implements OnMapReadyCallback {
+public class NoiseMap extends AppCompatActivity implements Heatmap.OnFragmentInteractionListener, ReportNoise.OnFragmentInteractionListener {
 
-    private GoogleMap mMap;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -37,23 +40,19 @@ public class NoiseMap extends AppCompatActivity implements OnMapReadyCallback {
         checkPermissions();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_noise_map);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if(findViewById(R.id.content_frame) != null) {
+            if(savedInstanceState != null) {
+                return;
+            }
+
+            Heatmap firstFragment = new Heatmap();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.content_frame, firstFragment).commit();
+        }
 
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         addDrawerItems();
         setupDrawer();
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        // TODO: Poll server for noisy locations & drop pins
-        LatLng belfast = new LatLng(44.4229874, -69.0111177);
-        mMap.addMarker(new MarkerOptions().position(belfast).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(belfast));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
     }
 
     @Override
@@ -104,17 +103,29 @@ public class NoiseMap extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void addDrawerItems() {
-        String[] osArray = { "Send Report" };
+        String[] osArray = { "Noise Heatmap", "Send Report", "About" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction transaction;
                 switch (position) {
                     case 0:
-                        Intent myIntent = new Intent(getApplicationContext(), CreateReport.class);
-                        startActivity(myIntent);
+                        Heatmap heatmapFragment = new Heatmap();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.content_frame, heatmapFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                        break;
+                    case 1:
+                        ReportNoise newFragment = new ReportNoise();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.content_frame, newFragment).addToBackStack(null);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                        break;
                 }
             }
         });
@@ -138,5 +149,9 @@ public class NoiseMap extends AppCompatActivity implements OnMapReadyCallback {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
     }
 }
