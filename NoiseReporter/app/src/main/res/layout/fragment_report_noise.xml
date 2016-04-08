@@ -9,8 +9,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.CreateReport"
-    tools:showIn="@layout/activity_create_report">
+    tools:context=".activities.CreateReport">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="59dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:src="@drawable/ic_mic_white_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,9 +27,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Press the microphone button to start reporting"
         android:id="@+id/textView"
+        android:gravity="center"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,16 +38,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Decibels:"
         android:id="@+id/decibelCounter"
-        android:layout_marginTop="142dp"
+        android:layout_marginTop="118dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_mic_white_24dp" />
 
 </RelativeLayout>
